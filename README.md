@@ -31,6 +31,10 @@ What things you need to install the software and how to install them
 $ Unzip project
 $ npm install
 ```
+> Create file from sample file
+
+- Create .env file from sample and set port
+- Create databse.js file from database.sample.js
 
 Note - Default port for mongoDB is 27017 if you have mongoDb running on different port please update it in database.js
 > Run this below command which will create user in mongoDB and store data in your DB

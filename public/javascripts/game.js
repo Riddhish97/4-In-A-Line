@@ -8,6 +8,8 @@ var game = function () {
     };
     this.sendColumData = function () {
         $("#enter").on("click", function () {
+            var l = Ladda.create(this);
+            l.start();
             let column = $("#positionInput").val();
             if (!column) {
                 toastr.error("Please enter cloumn digit", "Warning", {
@@ -29,7 +31,7 @@ var game = function () {
                         obj["sessionId"] = _this.sessionId
                     }
                     $.post(url, obj, function (response) {
-                        console.log(response);
+                        l.stop();
                         _this.newGame = false;
                         $("#positionInput").val("");
                         if (response.type == 'success') {
