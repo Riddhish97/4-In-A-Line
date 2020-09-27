@@ -1,0 +1,95 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Play Game</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Play Game</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            {{#if matchWinnerCount}}
+            {{#each matchWinnerCount}}
+            <div class="col-12 col-sm-4">
+                <div class="small-box {{#compare @index ">" 0}}bg-success{{else}}bg-info{{/compare}}">
+                    <div class="inner">
+                        <h3>{{#compare team1Count ">" team2Count}}{{team1Count}}{{else}}{{team2Count}}{{/compare}}</h3>
+
+                        <p>{{_id}} Wins</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas ion ion-stats-bars"></i>
+                    </div>
+                </div>
+                {{!-- <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">{{_id}} Wins</span>
+                        <span
+                            class="info-box-number text-center text-success mb-0">{{#compare team1Count ">" team2Count}}{{team1Count}}{{else}}{{team2Count}}{{/compare}}</span>
+                    </div>
+                </div> --}}
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+        <div class="row  justify-content-md-center">
+            <!-- left column -->
+            <div class="col-md-6 ">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Let's Play</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form id="gameForm">
+                        <div class="card-body">
+                            <label id="turnName">Yellow Turn</label>
+                            {{!-- <i class="far fa-bell"></i> --}}
+                            <div class="row  ">
+                                <!-- left column -->
+                                <div class="col-md-6 ">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="positionInput"
+                                            placeholder="Enters cloumn number(1-7)" disabled></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary btn-block" id="enter"
+                                        disabled>Enter</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-info btn-block" id="newGame"
+                                        title="Start new Game">New
+                                        Game</button>
+                                </div>
+                                <label id="detail"></label>
+
+                            </div>
+                            <!-- /.card-body -->
+
+                            {{!-- <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> --}}
+                    </form>
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!--/.col (left) -->
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        new game()
+    })
+</script>

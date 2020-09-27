@@ -1,0 +1,28 @@
+version: '2'
+services:
+    game:
+        image: 'game:latest'
+        container_name: game
+        restart: always
+        build:
+            dockerfile: Dockerfile
+            context: .
+        links:
+            - mongodb
+        ports:
+            - '3006:80'
+        volumes:
+            - './data/pm2logs:/root/.pm2/logs'
+            - './data/logs:/opt/game/logs'
+    mongodb:
+        image: 'mongo:3.6-stretch'
+        container_name: game-mongo
+        ports:
+            - '27019:27017'
+        restart: always
+        volumes:
+            - './data/mongo:/data/db'
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: admin
+            MONGO_INITDB_DATABASE: admin
