@@ -18,7 +18,7 @@
 ---
 ## Game Overview
 
-Connect Four is a two-player connection board game. Player take turns by selecting column from  6*7 grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs. Connect Four is a solved game. The first player can always win by playing the right moves.
+Connect Four is a two-player connection board game. Player take turns by selecting column from  6*7 grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own color. Connect Four is a solved game. The first player can always win by playing the right moves.
 
 ### Prerequisites
 
