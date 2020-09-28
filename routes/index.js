@@ -59,40 +59,44 @@ function checkWinner(array, result, row) {
 
 function intitalizeArray(yelow, red, newCol, arrayNew, sessionId) {
   return new Promise(async (resolve, reject) => {
-    let count = 1;
-    for (inx in yelow) {
-      let yellowCount = yelow.filter(function checkAdult(col) {
-        return col == yelow[inx];
-      });
-      let redCount = red.filter(function checkAdult(col) {
-        return col == yelow[inx];
-      });
-      let total = yellowCount.length + redCount.length;
-      let row = 6 - total
-      arrayNew[row][yelow[inx] - 1] = count;
-    }
-    count = 2
-    for (jnx in red) {
-      let yellowCount = yelow.filter(function checkAdult(col) {
-        return col == red[jnx];
-      });
-      let redCount = red.filter(function checkAdult(col) {
-        return col == red[jnx];
-      });
-      let total = yellowCount.length + redCount.length;
-      let row = 6 - total
-      arrayNew[row][red[jnx] - 1] = count;
-    }
-    let yellowCount = yelow.filter(function checkAdult(col) {
-      return col == newCol
-    });
-    let redCount = red.filter(function checkAdult(col) {
-      return col == newCol
-    });
-    let total = yellowCount.length + redCount.length;
-    let row = 6 - total
-    newCol = newCol - 1
     try {
+      let r = 0,
+        y = 0;
+      let arrayCon = [],
+        tempArray = [];
+      let totInputLen = yelow.length + red.length;
+      for (var i = 0; i < totInputLen; i++) {
+        if (i % 2 != 0) {
+          arrayCon.push(red[r]);
+          r++;
+        } else {
+          arrayCon.push(yelow[y]);
+          y++;
+        }
+      }
+      let count;
+      for (inx in arrayCon) {
+        count = 1
+        if (inx % 2 != 0) {
+          count = 2;
+        }
+        tempArray.push(arrayCon[inx]);
+        let countArr = tempArray.filter(function checkAdult(col) {
+          return col == arrayCon[inx];
+        });
+        let row = 6 - countArr.length
+        arrayNew[row][parseInt(arrayCon[inx]) - 1] = count;
+      }
+      let yellowCount = yelow.filter(function checkAdult(col) {
+        return col == newCol
+      });
+      let redCount = red.filter(function checkAdult(col) {
+        return col == newCol
+      });
+      let total = yellowCount.length + redCount.length;
+      let row = 6 - total
+      newCol = newCol - 1;
+
       let newD = await db.models.match_data.findOneAndUpdate({
         sessionId: sessionId
       }, {
@@ -100,11 +104,15 @@ function intitalizeArray(yelow, red, newCol, arrayNew, sessionId) {
       }, {
         new: true
       });
+      console.log(arrayNew, newCol, row);
+      let win = await checkWinner(arrayNew, newCol, row)
+      resolve({
+        win: win,
+        mainArr: newD.array
+      });
     } catch (err) {
       reject(err)
     }
-    let win = await checkWinner(arrayNew, newCol, row)
-    resolve(win);
   })
 }
 
@@ -126,7 +134,7 @@ router.get('/', async function (req, res, next) {
   try {
     res.render('index', {
       title: '4 IN A Line!',
-      site_title: "Gane",
+      site_title: "Game",
     });
   } catch (err) {
     console.log("Error: In get details route");
@@ -143,17 +151,19 @@ router.post('/match', async function (req, res, next) {
     let winner = 0;
     if (req.body.sessionId) {
       if (newGame) {
+        let array = [
+          [0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0]
+        ];
+        array[5][req.body.column - 1] = 1;
         await db.models.match_data.updateOne({
           sessionId: req.body.sessionId
         }, {
-          array: [
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0]
-          ],
+          array: array,
           yellow: [],
           red: [],
 
@@ -189,14 +199,15 @@ router.post('/match', async function (req, res, next) {
       }, {
         new: true
       });
-      winner = await intitalizeArray(newData.yellow, newData.red, req.body.column, matchData.array, sessionId)
+      obj = await intitalizeArray(newData.yellow, newData.red, req.body.column, matchData.array, sessionId)
 
       res.send({
         type: "success",
         sessionId: sessionId,
         isYellow: (isYellow ? false : true),
         valid: valid,
-        winner: winner
+        winner: obj.win,
+        mainArr: obj.mainArr
       })
     } else {
       let array = [
@@ -218,7 +229,8 @@ router.post('/match', async function (req, res, next) {
         sessionId: sessionId,
         isYellow: (isYellow ? false : true),
         valid: valid,
-        winner: winner
+        winner: winner,
+        mainArr: array
       })
     }
 

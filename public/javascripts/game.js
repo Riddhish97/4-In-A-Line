@@ -35,6 +35,16 @@ var game = function () {
                         _this.newGame = false;
                         $("#positionInput").val("");
                         if (response.type == 'success') {
+                            console.log(response.mainArr);
+                            $(`.ground`).css("background-color", "gray")
+                            for (i = 0; i < 6; i++) {
+                                for (j = 0; j < 7; j++) {
+                                    if (response.mainArr[i][j] != 0) {
+                                        let color = response.mainArr[i][j] == 1 ? "yellow" : "red";
+                                        $(`#${i}${j}`).css("background-color", color)
+                                    }
+                                }
+                            }
                             _this.sessionId = response.sessionId;
                             _this.isYellow = response.isYellow;
                             let move = "Red Move";
@@ -93,7 +103,9 @@ var game = function () {
 
     this.newGame = function () {
         $("#newGame").on("click", function () {
+            $(`.ground`).css("background-color", "gray")
             _this.newGame = true;
+            _this.isYellow = true;
             $("#turnName").removeClass("text-success");
             $("#turnName").text("Yellow Turn");
             $("#positionInput").prop("disabled", false)
