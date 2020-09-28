@@ -35,7 +35,6 @@ var game = function () {
                         _this.newGame = false;
                         $("#positionInput").val("");
                         if (response.type == 'success') {
-                            console.log(response.mainArr);
                             $(`.ground`).css("background-color", "gray")
                             for (i = 0; i < 6; i++) {
                                 for (j = 0; j < 7; j++) {

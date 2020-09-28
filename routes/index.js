@@ -104,7 +104,6 @@ function intitalizeArray(yelow, red, newCol, arrayNew, sessionId) {
       }, {
         new: true
       });
-      console.log(arrayNew, newCol, row);
       let win = await checkWinner(arrayNew, newCol, row)
       resolve({
         win: win,
