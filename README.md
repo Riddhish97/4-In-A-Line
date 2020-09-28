@@ -28,7 +28,7 @@ What things you need to install the software and how to install them
 - npm v6.4.1+
 ## Installation
 ```shell
-$ Unzip project
+$ git clone https://github.com/Riddhish97/4-In-A-Line.git
 $ npm install
 ```
 > Create file from sample file
