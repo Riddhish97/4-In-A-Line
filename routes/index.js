@@ -219,11 +219,24 @@ router.post('/match', async function (req, res, next) {
         [0, 0, 0, 0, 0, 0, 0]
       ];
       array[5][req.body.column - 1] = 1;
-      await db.models.match_data.create({
+      let newObj = await db.models.match_data.create({
         sessionId: sessionId,
         yellow: [req.body.column],
         array: array
       });
+      try {
+        let requestIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.headers['HTTP_CLIENT_IP'] || req.headers['X-Real-IP'] || req.headers['HTTP_X_FORWARDED_FOR'];
+        if (requestIP.substr(0, 7) === "::ffff:") {
+          requestIP = requestIP.substr(7)
+        }
+        CommonFn.fileLogs('ip_details_log').info(">>>> IP in header");
+        CommonFn.fileLogs('ip_details_log').info(requestIP);
+        CommonFn.fileLogs('ip_details_log').info(newObj._id);
+      } catch (err) {
+        console.log(err);
+        CommonFn.fileLogs('ip_details_log').info(">>>>Error in IP in header");
+        CommonFn.fileLogs('ip_details_log').info(err);
+      }
       res.send({
         type: "success",
         sessionId: sessionId,

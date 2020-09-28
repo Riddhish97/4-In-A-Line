@@ -10,6 +10,9 @@ global.db = require('./models');
 const {
   commonMiddelware
 } = require("./common/middleware");
+//load common functions
+const commonFunction = require("./common/functions");
+global.CommonFn = new commonFunction();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -18,9 +21,12 @@ const flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
 var logger = require('morgan');
+let fs = require('fs');
 
 var indexRouter = require('./routes/index');
-
+if (!fs.existsSync("./logs")) {
+  fs.mkdirSync("./logs");
+}
 var app = express();
 
 /**
