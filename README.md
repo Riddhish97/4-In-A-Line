@@ -8,7 +8,7 @@
 
 ## Table of Contents 
 
-- [Getting Started](#getting-started)
+- [Game Overview](#game-overview)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Support](#support)
