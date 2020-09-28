@@ -178,7 +178,8 @@ router.post('/match', async function (req, res, next) {
           type: "success",
           sessionId: sessionId,
           isYellow: isYellow,
-          valid: valid
+          valid: valid,
+          winner: 0
         })
       }
 
